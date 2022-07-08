@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nav bar</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+
+<nav>
+    <input type="checkbox" id="check">
+    <label for="check" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+    <label class="chatting">Post your opinion</label>
+    <ul>
+      <button  id="home_button"  class="but_on">home</button>
+      <button  id='tags_button' class="but_on">tag</button>
+      <button  id='history_button' class="but_on">history</button>
+      <button   id="notification_button" class="but_on">notification</button>
+
+    </ul>
+
+  </nav>
+ 
+<body>
+	
+
+
+
+</body>
+<script type="text/javascript">
+
+	token="{{token}}";
+	console.log('token',token)
+	
+	function create_form(i,auther,text,image_url){
+    var new_form=(` <div class="teext">
+    <h3><img src="${image_url}" > ${auther} </h3>
+    <p>${text}</p>
+     
+
+    <form action="{% url 'replay' %}" class="login-form" method="post">
+             {% csrf_token %}
+            <input type="hidden" value=${token} name="token_field" id="query_holder" />
+            <input type="hidden" placeholder=" " name="parent_id" value=${i} id="token_holder" />
+            <input type="hidden" name="purpose" value="veiw_replay" >
+            <button class="butt"> replay</button>
+            <p class="message"><a href="#"></a></p>
+          </form>
+       </div>     
+     <hr class="lin">
+
+    `)
+    var form_data=document.createElement("template")
+    form_data.innerHTML=new_form.trim()
+    x=form_data.content.firstElementChild
+    return x
+  
+
+
+  }
+
+
+	
+	data="{{data}}"
+	i=0
+	while (i!==-1){
+		i=data.indexOf('&quot;')
+		data=data.replace('&quot;','"')
+	}
+
+	
+	data=JSON.parse(data)
+	i=0
+	while (i<data.length){
+		t=data[i].Text
+		j=t.indexOf('$%*')
+		while (j!==-1){                      
+		j=t.indexOf('$%*')
+		t=t.replace('$%*','"')
+		}
+		data[i].Text=t
+		i=i+1
+	}
+	var i=data.length-1
+
+	while (i>=0){
+		element_id=data[i].id
+		console.log(element_id)
+		auther=data[i].auther
+		comment=data[i].Text
+		image_url=data[i].image_url
+		console.log(element_id)
+		new_element=create_form(element_id,auther,comment,image_url)
+		document.body.appendChild(new_element)
+		i=i-1		
+	}
+
+	
+var tags_button=document.getElementById("tags_button")
+tags_button.addEventListener('click',()=> {
+console.log('heyuio')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/tags?token=${url_token}`
+window.location.href=url_string
+
+})
+
+var history_button=document.getElementById("history_button")
+history_button.addEventListener('click',()=> {
+console.log('yeiow')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/history?token=${url_token}`
+window.location.href=url_string
+})
+
+var notification_button=document.getElementById("notification_button")
+notification_button.addEventListener('click',()=> {
+console.log('yeiow')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/notifications?token=${url_token}`
+window.location.href=url_string
+})
+
+
+var home_button=document.getElementById("home_button")
+home_button.addEventListener('click',()=> {
+console.log('heyuio')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/posts?token=${url_token}`
+window.location.href=url_string
+
+})
+
+
+</script>
+</html>

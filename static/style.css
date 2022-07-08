@@ -1,0 +1,120 @@
+{
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+body{
+    padding: 0;
+    margin: 0%;
+    font-family: 'Courier New';
+    background: linear-gradient(120deg,rgb(96, 156, 199),rgb(6, 66, 104));
+    height: 100vh;
+}
+
+nav{
+    background: linear-gradient(100deg,rgb(5, 96, 146), rgb(3, 60, 101));
+    height: 100px;
+    width: 100%;
+}
+
+label.chatting{
+    color: aliceblue;
+    font-size: 30px;
+    font-weight: 900;
+    line-height: 70px;
+    padding: 0 30px;
+}
+
+
+nav ul{
+    float: right;
+    margin-right: 30px;
+}
+
+
+ 
+
+.but_on{
+    background-color:white;
+    text-transform:capitalize;
+    padding:4px 9px;
+    margin: 20px;
+    font-size:30px;
+    font-weight: 800;
+    border-radius:7px;
+}
+.but_on:hover{
+    color:skyblue;
+}
+
+
+.checkbtn{
+    font-size: 70px;
+    font-weight:900;
+    color: white;
+    float: right;
+    line-height: 90px;
+    margin-right: 40px;
+    cursor: pointer;
+    display: none;
+}
+#check{
+    display: none;
+}
+
+.lin{
+    width: 87%;
+}
+.butt{
+    font-weight:700;
+    display:inline-block;
+    margin-right: 80px;
+    margin-left: 80px;
+}
+.text{
+    margin-top: 50px;
+    margin-right: 20px;
+    margin-left: 80px;
+    font-size: 20px;
+    width: 80%;
+    height: 220px;
+    padding: 15px;
+    border-radius: 7px;
+    border: 2px solid blue;
+}
+
+div{ width: 100%;
+    margin: 40px;
+    margin-left: 15px;
+    padding-left: 80px;
+    font-size: 20px;
+    border-radius: 5px;
+}
+ h3{
+    display: inline;
+    text-transform: capitalize;
+
+    
+}
+
+
+.butt:hover{
+     cursor: pointer;
+     font-size: 15px;
+}
+
+
+div p{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+    
+}
+div img{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+}
+
+
+

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<body>
+	
+	<form action="{% url 'search_query' %}" class="login-form" method="post">
+		{% csrf_token %}
+		<input type="text"  placeholder="search" name="search_bar" size=100px >
+		<input type="hidden" name="token_field" value="" id="token_holder1" >
+		<button> search</button>
+    </form>
+
+
+	<button id="tags_button"> TAGS</button>
+	<button id="history_button"> HISTORY</button>
+	<button id="notification_button"> NOTIFICATIONS</button>
+
+	
+<h3>                  </h3>
+<h3>                  </h3>
+	<form action="{% url 'posts' %}" class="login-form" method="post">
+		{% csrf_token %}
+		<input type="textarea"  placeholder="enter your post here" name="comment" size=100px >
+		<input type="hidden" name="token_field" value="" id="token_holder2" >
+		<input type="hidden" name="purpose" value="post">
+		<button> POST</button>
+
+	</form>
+
+
+</body>
+<script type="text/javascript">
+	console.log('jnasbjasfllnasfbjlasfl')
+	token="{{token}}";
+	console.log('token',token)
+	sessionStorage.setItem('token',token);
+	x=sessionStorage.getItem("token");
+	var p=document.getElementById("token_holder2");
+	p.setAttribute("value",x);
+	var q=document.getElementById("token_holder1");
+	q.setAttribute("value",x);
+	function create_form(i,auther,text){
+		var new_form=(`
+			<div class="login-page">
+			<h4>${auther} </h4>
+			<h4>${text}</h4>
+        <div class="form">
+          
+          <form action="{% url 'replay' %}" class="login-form" method="post">
+             {% csrf_token %}
+            <input type="hidden" value=${token} name="token_field" id="query_holder" />
+            <input type="hidden" placeholder=" " name="parent_id" value=${i} id="token_holder" />
+            <input type="hidden" name="purpose" value="veiw_replay">
+            <button> replay</button>
+            <p class="message"><a href="#"></a></p>
+          </form>
+        </div>
+      </div>
+
+		`)
+		var form_data=document.createElement("template")
+		form_data.innerHTML=new_form.trim()
+		x=form_data.content.firstElementChild
+		return x
+	
+
+
+	}
+
+	
+
+
+
+	
+	data="{{data}}"
+	i=0
+	while (i!==-1){
+		i=data.indexOf('&quot;')
+		data=data.replace('&quot;','"')
+	}
+
+	
+	data=JSON.parse(data)
+	i=0
+	while (i<data.length){
+		t=data[i].Text
+		j=t.indexOf('$%*')
+		while (j!==-1){                      
+		j=t.indexOf('$%*')
+		t=t.replace('$%*','"')
+		}
+		data[i].Text=t
+		i=i+1
+	}
+	i=0
+	var new_div=document.createElement('div')
+	var auther_h=document.createElement('h3')
+	var comment_h=document.createElement('h3')
+	var sub=document.createElement('button')
+	var i=0
+
+	while (i<data.length){
+		element_id=data[i].id
+		auther=data[i].auther
+		comment=data[i].Text
+		console.log(element_id)
+		new_element=create_form(element_id,auther,comment)
+		document.body.appendChild(new_element)
+		i=i+1		
+	}
+
+	
+var tags_button=document.getElementById("tags_button")
+tags_button.addEventListener('click',()=> {
+console.log('heyuio')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/tags?token=${url_token}`
+window.location.href=url_string
+
+
+})
+
+var history_button=document.getElementById("history_button")
+history_button.addEventListener('click',()=> {
+console.log('yeiow')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/history?token=${url_token}`
+window.location.href=url_string
+})
+
+
+var notification_button=document.getElementById("notification_button")
+notification_button.addEventListener('click',()=> {
+console.log('yeiow')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/notifications?token=${url_token}`
+window.location.href=url_string
+})
+
+
+
+
+</script>
+</html>

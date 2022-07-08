@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nav bar</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+
+
+<body>
+	<nav>
+    <input type="checkbox" id="check">
+    <label for="check" class="checkbtn">
+      <i class="fas fa-bars"></i>
+    </label>
+    <label class="chatting">Post your opinion</label>
+    <ul>
+      <button id="home_button" class="but_on">home</button>
+      <button  id='tags_button' class="but_on">tag</button>
+      <button  id='history_button' class="but_on">history</button>
+      <button   id="notification_button" class="but_on">notification</button>
+
+    </ul>
+
+  </nav>
+ 
+
+
+</body>
+<script type="text/javascript">
+
+	token="{{token}}";
+	console.log('token',token)
+	
+	function create_form(i,auther,comment,notification,parent_text,image_url){
+		if (notification==='x') {
+			message=`${auther} has replaied on your comment`
+		}
+		if (notification==='y') {
+			message=`${auther} has tagged you`
+		}
+		if (parent_text==='none') {
+			parent_text='   '
+		}
+		var new_form=(`
+			<div class="teext">
+			<h3>${message}</h3>
+			<h4> <img src="${image_url}" > ${parent_text}</h4>
+			<h4>          </h4>
+			<h4>${comment}</h4>
+        <div class="form">
+          
+          <form action="{% url 'replay' %}" class="login-form" method="post">
+             {% csrf_token %}
+            <input type="hidden" value=${token} name="token_field" id="query_holder" />
+            <input type="hidden" placeholder=" " name="parent_id" value=${i} id="token_holder" />
+            <input type="hidden" name="purpose" value="veiw_replay">
+            <button> replay</button>
+            <p class="message"><a href="#"></a></p>
+          </form>
+        </div>
+      </div>
+
+		`)
+		var form_data=document.createElement("template")
+		form_data.innerHTML=new_form.trim()
+		x=form_data.content.firstElementChild
+		return x
+	
+
+
+	}
+
+
+	
+	data="{{data}}"
+	i=0
+	while (i!==-1){
+		i=data.indexOf('&quot;')
+		data=data.replace('&quot;','"')
+	}
+
+	
+	data=JSON.parse(data)
+	i=0
+	while (i<data.length){
+		t=data[i].Text
+		j=t.indexOf('$%*')
+		while (j!==-1){                      
+		j=t.indexOf('$%*')
+		t=t.replace('$%*','"')
+		}
+		data[i].Text=t
+		i=i+1
+	}
+	
+	var i=data.length-1
+	console.log(0)
+	console.log(data)
+
+	while (i>=0){
+		element_id=data[i].id
+		comment=data[i].Text
+		parent_text=data[i].parent_text
+		notification=data[i].action
+		auther=data[i].auther
+		image_url=data[i].image_url
+		console.log(image_url)
+		new_element=create_form(element_id,auther,comment,notification,parent_text,image_url)
+		document.body.appendChild(new_element)
+		i=i-1		
+	}
+	
+var tags_button=document.getElementById("tags_button")
+tags_button.addEventListener('click',()=> {
+console.log('heyuio')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/tags?token=${url_token}`
+window.location.href=url_string
+
+})
+
+var history_button=document.getElementById("history_button")
+history_button.addEventListener('click',()=> {
+console.log('yeiow')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/history?token=${url_token}`
+window.location.href=url_string
+})
+
+
+var notification_button=document.getElementById("notification_button")
+notification_button.addEventListener('click',()=> {
+console.log('yeiow')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/notifications?token=${url_token}`
+window.location.href=url_string
+})
+
+
+var home_button=document.getElementById("home_button")
+home_button.addEventListener('click',()=> {
+console.log('heyuio')
+var url_token=encodeURIComponent(token)
+var url_string=`http://127.0.0.1:8000/posts?token=${url_token}`
+window.location.href=url_string
+
+})
+
+</script>
+</html>
